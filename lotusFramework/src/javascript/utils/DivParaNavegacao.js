@@ -3,7 +3,6 @@ import renderizarElementos from "./renderizarElementos.js";
 export default class DivParaNavegacao {
 
     constructor() {
-        this._classList = "iniciar";
         this.renderizarDivParaNavegacao();
     }
 
