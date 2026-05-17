@@ -450,7 +450,7 @@ npx live-server
 
 # Why "Lotus"?
 
-The name **Lotus** is inspired by the automotive engineering philosophy behind the :contentReference[oaicite:0]{index=0} brand.
+The name **Lotus** is inspired by the automotive engineering philosophy behind the brand.
 
 Lotus became known for a fundamental principle:
 
