@@ -1,0 +1,16 @@
+{
+  "short_name": "Lotus",
+  "name": "Lotus Framework",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#141414",
+  "background_color": "#000000",
+  "description": "Lotus framework",
+  "icons": [
+    {
+      "src": "/assets/images/lotusLogo.png",
+      "type": "image/png",
+      "sizes": "1024x1024"
+    }
+  ]
+}
