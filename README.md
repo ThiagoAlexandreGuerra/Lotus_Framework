@@ -1,482 +1,396 @@
-# Lotus UI Framework
+# Lotus
 
-A lightweight object-oriented JavaScript framework for declarative interface construction.
-
----
-
-## Overview
-
-**Lotus UI Framework** is an experimental front-end architecture designed to transform DOM manipulation into an object-oriented and declarative development experience.
-
-Instead of manually creating and styling elements through imperative DOM operations, Lotus introduces a structured abstraction layer where each visual component is represented as an autonomous object.
-
-The framework was created as both a practical interface-building solution and an architectural study platform focused on understanding how modern UI systems are designed internally.
+A lightweight object-oriented JavaScript framework for building modular, declarative and highly extensible user interfaces.
 
 ---
 
-## Philosophy
+# Overview
 
-Traditional browser interface construction often involves repetitive low-level instructions such as:
+**Lotus** is an experimental front-end framework and architectural research project focused on transforming interface construction into a component-oriented and declarative experience.
+
+Instead of relying exclusively on low-level DOM operations, Lotus introduces an abstraction layer where visual entities become autonomous objects capable of managing their own structure, styling, behavior and rendering lifecycle.
+
+The framework is currently in **Alpha**, and although several core systems are already implemented, the architecture is continuously evolving and will undergo numerous refinements and extensions before reaching production maturity.
+
+Lotus is both a practical framework and a long-term study of how modern UI systems, rendering engines and component architectures can be designed from the ground up.
+
+---
+
+# Philosophy
+
+Lotus aims to make interface development resemble system modeling rather than DOM manipulation.
+
+Traditional development often requires repetitive instructions:
 
 ```javascript
-const element = document.createElement("div");
-element.style.width = "200px";
-element.style.height = "100px";
-element.style.backgroundColor = "#242424";
-document.body.appendChild(element);
+const div = document.createElement("div");
+div.style.width = "200px";
+div.style.backgroundColor = "#242424";
+document.body.appendChild(div);
 ```
 
-Lotus replaces this imperative workflow with semantic and object-oriented composition:
+Lotus promotes object composition instead:
 
 ```javascript
-const botao = new BotaoEventoClick(() => executarAcao());
+const title = new Title("Welcome");
 
-botao.atribuirWidth = "120px";
-botao.atribuirBottom = "10px";
+title
+    .setFontSize("32px")
+    .setColor("#ffffff")
+    .setTextAlign("center");
 ```
 
-Each component is instantiated already:
+Components are designed to be:
 
-- Rendered
-- Styled
-- Interactive
-- Configurable
-- Integrated into the framework lifecycle
+* Self-contained
+* Reactive
+* Reusable
+* Extensible
+* Renderable
+* Composable
 
-The goal is to make interface construction resemble system modeling rather than manual DOM assembly.
+The framework encourages describing **what should exist**, rather than manually describing every step required to build it.
 
 ---
 
 # Core Principles
 
----
+## Object-Oriented Components
 
-## 1. Structural Abstraction
+Every interface element is represented as an object.
 
-Every visual entity is treated as an independent object.
+Components encapsulate:
 
-A button is not merely a styled `<div>`.
-
-It is a self-contained component that encapsulates:
-
-- Rendering
-- Styling
-- Event behavior
-- Positioning
-- Responsiveness
-- State synchronization
+* Structure
+* Style
+* Behavior
+* Rendering
+* Event handling
+* Layout participation
 
 ---
 
-## 2. Reactive Configuration System
+## Declarative Composition
 
-The `ConfiguracaoPadrao` base class provides a centralized reactive styling engine.
-
-Any property update automatically reflects in the DOM.
-
-Example:
+Complex interfaces are created by combining components.
 
 ```javascript
-botao.atribuirWidth = "150px";
-botao.atribuirBackgroundColor = "#121212";
-botao.atribuirBorderRadius = "12px";
-```
+const container = new StandardBox();
 
-Internally, Lotus synchronizes style state changes without requiring direct DOM manipulation.
+container
+        ._addChild(new Title("Lotus")
+        ._addChild(new Paragraph({title: "Experimental framework" })
 
-This eliminates repetitive instructions such as:
-
-```javascript
-element.style.width = "150px";
 ```
 
 ---
 
-## 3. Declarative Composition
+## Rendering Abstraction
 
-Complex interfaces are built through object composition.
+Lotus provides its own rendering layer.
 
-Example:
+Current capabilities include:
 
-```javascript
-const formulario = new Formulario(
-    "Authentication",
-    "email",
-    "password"
-);
-```
+* Virtual DOM representation
+* Object tree generation
+* Differential rendering
+* Incremental updates
+* DOM serialization
+* Tree traversal utilities
 
-The framework internally handles:
-
-- Input instantiation
-- Structural hierarchy
-- Parent-child composition
-- Visual arrangement
-- Data serialization
-
-This allows developers to describe *what should exist* rather than *how to build it manually*.
+The rendering system aims to minimize unnecessary DOM operations while preserving component independence.
 
 ---
-
-## 4. Layout Coordination
-
-Lotus introduces a contextual execution system through:
-
-- `CoordenadorLayout`
-- `BlocoExecucao`
-
-These classes enable dynamic layout orchestration based on DOM state.
-
-Example:
-
-```javascript
-new CoordenadorLayout(
-    blocoShowroom,
-    blocoMainView
-);
-```
-
-This allows:
-
-- Conditional rendering
-- View switching
-- Context-based execution
-- Automatic interface transitions
-
----
-
-## 5. Programmatic Responsiveness
-
-Responsive behavior is attached directly to components.
-
-Example:
-
-```javascript
-botao._adicionarResponsividade();
-```
-
-Components dynamically recalculate:
-
-- Width
-- Height
-- Position
-- Scaling
-
-based on viewport dimensions.
-
-Unlike traditional CSS-only responsiveness, Lotus treats responsiveness as executable component logic.
-
----
-
-## 6. Intelligent Inputs
-
-Input components infer metadata from their type.
-
-Example:
-
-```javascript
-const email = new Input("email");
-```
-
-Automatically configures:
-
-- Semantic label
-- Placeholder
-- Input type
-- Default validation semantics
-- Visual styling
-
----
-
-## 7. Form Serialization
-
-Forms expose structured JSON output.
-
-Example:
-
-```javascript
-formulario.getData
-```
-
-Returns:
-
-```json
-{
-  "email": "example@mail.com",
-  "password": "********"
-}
-```
-
-This allows direct integration with APIs and backend systems.
-
----
-
-## 8. Semantic Rendering Engine
-
-The internal `renderizarElementos()` utility acts as Lotus’ rendering core.
-
-It centralizes DOM creation and reduces repetitive element construction boilerplate.
-
----
-
-# Architecture
-
----
-
-## Base Layer
-
-### ConfiguracaoPadrao
-
-Central reactive styling engine.
-
-Responsibilities:
-
-- Style state management
-- Automatic DOM synchronization
-- Positional abstraction
-- Shared configuration behavior
-
----
-
-## Structural Components
-
-### CaixaPadrao
-
-Generic visual container.
-
-Features:
-
-- Nested child containers
-- Drag support
-- Visibility control
-- Dynamic rendering
-
----
-
-### Titulo
-
-Semantic title abstraction.
-
----
-
-### Input
-
-Smart input component.
-
----
-
-### Formulario
-
-Composite form container with data aggregation.
-
----
-
-### Botao
-
-Interactive visual button.
-
----
-
-### BotaoEventoClick
-
-Event-driven clickable button abstraction.
-
----
-
-## Layout Layer
-
-### CoordenadorLayout
-
-Coordinates layout execution flow.
-
----
-
-### BlocoExecucao
-
-Defines execution contexts and triggers.
-
----
-
-# Example
-
-## Authentication Interface
-
-```javascript
-const login = new Formulario(
-    "Authentication",
-    "email",
-    "password"
-);
-
-const enviar = new BotaoEventoClick(() => {
-    console.log(login.getData);
-});
-```
-
----
-
-# Current Features
 
 ## Reactive Styling
 
-Automatic DOM synchronization through setters.
+Components synchronize their internal state with the DOM automatically.
 
----
+```javascript
+button
+    .setWidth("150px")
+    .setBackgroundColor("#121212")
+    .setBorderRadius("12px");
+```
 
-## Component Composition
-
-Nested object-based interface construction.
+No direct DOM manipulation is required.
 
 ---
 
 ## Layout Coordination
 
-Conditional rendering based on execution blocks.
+Layout execution is coordinated through:
+
+* LayoutCoordinator
+* ExecutionBlock
+
+These systems allow:
+
+* Contextual rendering
+* Dynamic interface transitions
+* Conditional execution
+* Modular page organization
 
 ---
 
-## Responsive Scaling
+## Component Library
 
-Viewport-based dynamic recalculation.
+Lotus currently provides reusable components including:
 
----
+* Boxes
+* Buttons
+* Titles
+* Text
+* Paragraphs
+* Spans
+* Sidebars
+* Grid layouts
+* Circles
+* Anchors
+* Custom containers
 
-## Form Serialization
-
-Automatic structured data retrieval.
-
----
-
-## Event-driven Components
-
-Encapsulated interaction logic.
-
----
-
-## Local Persistence Support
-
-Browser storage integration for UI state persistence.
+All components inherit common capabilities and follow the same lifecycle philosophy.
 
 ---
 
-# Planned Improvements
+## Behavior System
 
-The project roadmap includes:
+Components can dynamically acquire behaviors such as:
+
+* Dragging
+* Visibility control
+* Event listeners
+* Hover interactions
+* Standard component actions
+
+This allows behavior composition without tightly coupling functionality.
+
+---
+
+## PWA Support
+
+Lotus includes native Progressive Web App capabilities:
+
+* Web Manifest
+* Service Workers
+* Installation routines
+* Offline support foundations
+
+Enabling applications built with Lotus to progressively behave like installable software.
+
+---
+
+## Animation System
+
+The framework provides animation utilities such as:
+
+* Rotations
+* Sliding transitions
+* Depth effects
+* 3D transformations
+
+Animations are treated as reusable behaviors rather than isolated CSS fragments.
+
+---
+
+## Development Utilities
+
+Lotus includes utilities for:
+
+* DOM cleanup
+* DOM-to-object conversion
+* Path discovery
+* Function serialization
+* Registry systems
+* Node replacement
+* Tree search operations
+
+These tools support internal framework mechanisms and future extensibility.
+
+---
+
+# Architecture
+
+## Core
+
+Responsible for:
+
+* Rendering
+* Navigation
+* Layout coordination
+* Virtual DOM
+* Component system
+* State synchronization
+* PWA integration
+
+---
+
+## System Components
+
+Contains:
+
+* StandardComponent
+* StyleController
+* Component wrappers
+* Behaviors
+* Utility modules
+* Internal component functions
+
+---
+
+## Virtual DOM Engine
+
+Current features:
+
+* Virtual node creation
+* Object tree representation
+* Tree diffing
+* Node search
+* Replacement algorithms
+* Function reference handling
+
+The Virtual DOM system remains under active development and will continue receiving major improvements.
+
+---
+
+## Pages
+
+Application structure is divided into:
+
+* Intro
+* Showroom
+* Laboratory
+* Explanations
+* Developer tools
+
+These areas serve both as documentation and experimental environments.
+
+---
+
+# Current Status
+
+**Lotus is currently in Alpha.**
+
+This means:
+
+* APIs are subject to change.
+* Internal structures are continuously being refactored.
+* New modules will be introduced.
+* Existing systems may evolve significantly.
+* Stability and performance improvements are ongoing.
+
+Backward compatibility is not guaranteed between alpha versions.
+
+---
+
+# Roadmap
 
 ## Rendering
 
-- Virtual rendering layer
-- Incremental DOM updates
-- Component diffing
+* Optimized reconciliation engine
+* Batched updates
+* Smarter diff algorithms
+* Fine-grained reactivity
 
 ---
 
 ## Architecture
 
-- Internal event bus
-- Global state manager
-- Dependency injection system
+* Global state manager
+* Dependency injection
+* Event bus
+* Middleware support
 
 ---
 
-## UI Features
+## Components
 
-- Theme engine
-- Animation system
-- Transition manager
-
----
-
-## Lifecycle
-
-- Lifecycle hooks
-- Component mounting phases
-- Destruction handlers
+* Inputs
+* Forms
+* Modals
+* Menus
+* Tables
+* Lists
+* Notifications
 
 ---
 
 ## Navigation
 
-- Router abstraction
-- Declarative route management
+* Router
+* Route guards
+* Dynamic page loading
 
 ---
 
-# Project Goals
+## Lifecycle
 
-Lotus is **not intended to compete directly with production-scale frameworks**.
-
-Its purpose is architectural experimentation and educational exploration.
-
-The project serves as a practical environment for understanding:
-
-- Front-end abstraction
-- Framework internals
-- Declarative rendering systems
-- Object-oriented UI architecture
-- Component orchestration
+* Mount hooks
+* Update hooks
+* Destroy hooks
 
 ---
 
-# Learning Objectives
+## Styling
 
-This project is designed as a study platform for mastering:
-
-- Advanced JavaScript architecture
-- Design patterns
-- DOM abstraction systems
-- Rendering strategies
-- Framework design principles
+* Theme engine
+* Dark mode
+* Variables system
+* Responsive abstractions
 
 ---
 
-# Installation
+## Developer Experience
 
-Clone the repository:
+* DevTools integration
+* Debug mode
+* Component inspector
+* Performance profiling
 
-```bash
-git clone <repository-url>
-```
+---
 
-Run locally using a static server.
+# Long-Term Vision
 
-Example:
+Lotus is intended to evolve into a professional-grade framework while remaining an architectural exploration platform.
 
-```bash
-npx live-server
-```
+Its goals include:
+
+* Understanding framework internals.
+* Building independent abstractions.
+* Studying rendering systems.
+* Exploring object-oriented UI architectures.
+* Creating highly modular applications.
+* Providing a foundation for future projects.
+
+The framework prioritizes clarity, extensibility and architectural experimentation over premature complexity.
 
 ---
 
 # Why "Lotus"?
 
-The name **Lotus** is inspired by the automotive engineering philosophy behind the brand.
-
-Lotus became known for a fundamental principle:
+The name is inspired by the engineering philosophy associated with Lotus automobiles:
 
 > Simplify, then add lightness.
 
-This idea reflects the core philosophy of the framework.
+This principle reflects the framework's objective:
 
-Lotus UI was designed around efficiency through structural simplicity.
+Creating powerful abstractions through structural simplicity.
 
-Instead of adding unnecessary complexity, the framework focuses on creating lightweight abstractions that remain expressive, fast, and architecturally clean.
+Lotus pursues:
 
-The name represents the pursuit of:
+* Lightweight design
+* Modular architecture
+* High flexibility
+* Minimal overhead
+* Elegant abstractions
 
-- Lightweight design
-- Structural efficiency
-- Elegant abstraction
-- High responsiveness
-- Minimal overhead
-
-Just as Lotus engineering seeks performance through intelligent reduction, Lotus UI seeks interface power through carefully designed simplicity.
 ---
 
 # Author
 
-**Thiago Alexandre Guerra**  
-Computer Science Student  
+**Thiago Alexandre Guerra**
+
+Computer Science Student
 Federal University of Juiz de Fora (UFJF)
 
 ---
@@ -487,8 +401,10 @@ MIT License
 
 ---
 
-## Final Note
+# Final Note
 
-Lotus is an evolving architectural exploration.
+Lotus is an evolving ecosystem.
 
-It exists to investigate how far object-oriented abstractions can simplify interface construction while deepening understanding of front-end framework design.
+Its current Alpha stage represents only the beginning of a broader vision. New subsystems, rendering improvements, developer tools and architectural refinements will continue to shape the framework over time.
+
+The project is being developed with long-term ambitions and a commitment to understanding how modern interface frameworks can be designed from first principles.
