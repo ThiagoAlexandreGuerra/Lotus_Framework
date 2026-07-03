@@ -1,11 +1,13 @@
+
 export default function renderDiff(diffs = []) {
 
+   
     if (!Array.isArray(diffs)) {
         throw new Error(
             "Diffs must be an array."
         );
     }
-
+    
     for (const diff of diffs) {
 
         if (!diff) {
@@ -54,7 +56,7 @@ function renderValueChanged(
     element,
     diff
 ) {
-
+    
     if (!element) {
         return;
     }
@@ -86,9 +88,161 @@ function renderValueChanged(
             ] = diff.newValue;
 
             break;
+        case "generic":
+
+    if (diff.property === "parent") {
+
+        renderChildrenChanged(
+            element,
+            diff,
+            diff.newValue
+        );
+
+        return;
+    }    
     }
 }
+function renderChildrenChanged(
+    parentElement,
+    diff,
+    newNode
+) {
 
+   
+    let newTreeElements = findChildUpdate(newNode.children , diff.nodeId)
+    
+    let childElement = null;
+    newTreeElements.forEach((vnode)=>{
+       childElement= createElementFromVNode(vnode);
+       parentElement.appendChild(childElement);
+    })
+}
+
+function findChildUpdate(node , parentId , findParent= false , children = []){
+    
+    
+    if(Array.isArray(node)){
+        node.forEach(child => {
+            
+            if((child.id == parentId)){
+                findParent = true;
+                return findChildUpdate(child.children, parentId , true , children);
+            } 
+            
+            if(findParent){
+
+                let newChild = document.getElementById(`${child.id}`);
+               
+                if(!newChild){
+                   
+                    children.push(child);
+                    
+                }
+            }
+
+            
+
+        });
+
+        if(children){return children;}
+        
+    }
+
+}
+function createElementFromVNode(
+    vnode
+) {
+
+    const element =
+        document.createElement(
+            vnode.tag
+        );
+
+    // id
+    if (vnode.id) {
+        element.id = vnode.id;
+    }
+
+    // classes
+    if (Array.isArray(vnode.class)) {
+
+        element.className =
+            vnode.class.join(" ");
+    }
+
+    // texto
+    if (vnode.text) {
+
+        element.textContent =
+            vnode.text;
+    }
+
+    // html
+    if (vnode.html) {
+
+        element.innerHTML =
+            vnode.html;
+    }
+
+    // propriedades
+    if (vnode.property) {
+
+        Object.assign(
+            element,
+            vnode.property
+        );
+    }
+
+    // estilos
+    if (vnode.styles) {
+
+        Object.assign(
+            element.style,
+            vnode.styles
+        );
+    }
+
+    // eventos
+    if (
+        Array.isArray(
+            vnode.addEventListenerFunctions
+        )
+    ) {
+
+        for (
+            const listener
+            of vnode.addEventListenerFunctions
+        ) {
+
+            element.addEventListener(
+                listener.type,
+                listener.function
+            );
+        }
+    }
+
+    // filhos recursivos
+    if (
+        Array.isArray(
+            vnode.children
+        )
+    ) {
+
+        for (
+            const childNode
+            of vnode.children
+        ) {
+
+            element.appendChild(
+                createElementFromVNode(
+                    childNode
+                )
+            );
+        }
+    }
+
+    return element;
+}
 function renderAdded(
     element,
     diff

@@ -4,6 +4,7 @@ const closeFullscreen_24dp       = "closeFullscreen_24dp.svg";
 const fullscreen_24dp            = "fullscreen_24dp.svg";
 const home_24dp                  = "home_24dp.svg";
 const person_24dp                = "person_24dp.svg";
+const lotusLogo                  = "lotusLogo.png";
 
 export default class GetPath {
 
@@ -71,5 +72,8 @@ export default class GetPath {
     }
     getperson_24dp(){
         return `url(${this._pathFolderIcons + person_24dp})`;
+    }
+    getLotusLogo(){
+        return `url(${this._pathFolderImages + lotusLogo})`;
     }
 }

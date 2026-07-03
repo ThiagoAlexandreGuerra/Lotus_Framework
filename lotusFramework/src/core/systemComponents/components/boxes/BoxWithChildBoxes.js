@@ -6,23 +6,21 @@ export default class BoxWithChildBoxes extends StandartBox {
     constructor(
         hasChildren = 1,
         layout = "vertical",
-        isMovable = false,
-        isChild = false,
+        onHeritage = false
     ) {
 
-        super(isMovable);
+        super(onHeritage);
 
         this._validateInput(
-            isMovable,
             hasChildren,
-            isChild,
+            onHeritage,
             layout
         );
 
         this._classIdentify = "BWC";
         this._id = getId(this._classIdentify);
 
-        this._className.push("BoxWithChildBoxes");
+        this._classNName.push("BoxWithChildBoxes");
 
         this._hasChildren = hasChildren;
         this._layout = layout;
@@ -31,6 +29,7 @@ export default class BoxWithChildBoxes extends StandartBox {
         this._grandson = null;
         this._greatGrandson = null;
 
+        this._sizeParentElementComparedToChildElement=0.9;
         this._auxFor = [
             "_son",
             "_grandson",
@@ -42,22 +41,21 @@ export default class BoxWithChildBoxes extends StandartBox {
             id: this._id
         });
 
+        this._updateStyleConfig({
+            padding:"0px"
+        })
+
         this._configureLayout();
         this._addSubChildren();
+
+        this.BWCComponents = this._children;
     }
 
     _validateInput(
-        isMovable,
         hasChildren,
-        isChild,
+        onHeritage,
         layout
     ) {
-
-        if (typeof isMovable !== "boolean") {
-            throw new TypeError(
-                "isMovable must be a boolean."
-            );
-        }
 
         const validChildren =
             typeof hasChildren === "number" &&
@@ -71,9 +69,9 @@ export default class BoxWithChildBoxes extends StandartBox {
             );
         }
 
-        if (typeof isChild !== "boolean") {
+        if (typeof onHeritage !== "boolean") {
             throw new TypeError(
-                "isChild must be a boolean."
+                "onHeritage must be a boolean."
             );
         }
 
@@ -92,13 +90,49 @@ export default class BoxWithChildBoxes extends StandartBox {
         return true;
     }
 
+    _heritage(parentHeritage){
+
+        parentHeritage?.parentWidth == "auto"   || this.BWCResizeWidth(parentHeritage?.parentWidth);
+        parentHeritage?.parentHeight == "auto"  || this.BWCResizeHeight(parentHeritage?.parentHeight);
+    }
+
+    BWCResizeWidth(value){
+
+        this.setWidth(value);
+       
+        const newWidth = `${(this.getWidth()/this._hasChildren)*this._sizeParentElementComparedToChildElement}px`;
+    
+        this._son?.setWidth(newWidth);
+        this._grandson?.setWidth(newWidth);
+        this._greatGrandson?.setWidth(newWidth);
+
+        return this;
+    }
+
+    BWCResizeHeight(value){
+
+        this.setHeight(value);
+        this._son?.setHeight(`${this.getHeight()*this._sizeParentElementComparedToChildElement}px`);
+        this._grandson?.setHeight(`${this.getHeight()*this._sizeParentElementComparedToChildElement}px`);
+        this._greatGrandson?.setHeight(`${this.getHeight()*this._sizeParentElementComparedToChildElement}px`);
+
+        return this;
+    }
+
+    BWCSizeParentElementComparedToChildElement(value){
+
+        this._sizeParentElementComparedToChildElement = value;
+
+        return this;
+    }
+
     getSon(){               return this._son;}
     getGrandson(){          return this._grandson;}
     getGreatGrandson(){     return this._greatGrandson;}
 
-    _removeSon()            {console.log("_removeSon");this._removeChildBoxes(0); }
-    _removeGrandson()       {console.log("_removeGrandson"); this._removeChildBoxes(1); }
-    _removeGreatGrandson()  {console.log("_removeGreatGrandson");this._removeChildBoxes(2); }
+    _removeSon()            {this._removeChildBoxes(0); }
+    _removeGrandson()       {this._removeChildBoxes(1); }
+    _removeGreatGrandson()  {this._removeChildBoxes(2); }
 
     _removeChildBoxes(index){
         if (index < 0 || index >= this._children.length) return;
@@ -139,7 +173,9 @@ export default class BoxWithChildBoxes extends StandartBox {
 
             this[prop] = new StandartBox();
 
-            this[prop]._removeStandartPosition();
+            this[prop]
+                ._removeStandardPosition()
+    
 
             this._defineChildSize(prop);
 
@@ -157,7 +193,7 @@ export default class BoxWithChildBoxes extends StandartBox {
 
             const child = new StandartBox();
 
-            child._removeStandartPosition();
+            child._removeStandardPosition();
 
             currentParent[prop] = child;
 

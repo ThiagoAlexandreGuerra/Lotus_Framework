@@ -6,9 +6,9 @@ export default class Text extends StandardBox{
 
     constructor(...paragraphs){
 
-        super();
+        super(true);
         
-        this._className.push("Text");
+        this._classNName.push("Text");
         this._classIdentify = "TXT";
         this._id = getId(this._classIdentify);
 
@@ -44,6 +44,7 @@ export default class Text extends StandardBox{
             gap:"0px",
             padding:"0px",
             lineHeight: "normal",
+            border:""
         })
         this._alignItems
         this._justifyContent 
@@ -57,8 +58,11 @@ export default class Text extends StandardBox{
         this._paragraphsArrey.forEach(component=>{
         
             component
-                .setBackgroundColor(this.getBackgroundColor())
-                ._setFontFamily(this._paragraphsArrey[0].getFontFamily());
+                .setBackgroundColor("inert")
+                ._setFontFamily(this._paragraphsArrey[0].getFontFamily())
+                .BWCComponents.forEach((comp)=>{
+                    comp.setBackgroundColor("inert")
+                })
         })
     }
 }

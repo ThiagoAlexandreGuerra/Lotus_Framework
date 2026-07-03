@@ -8,9 +8,9 @@ export default function PWA(){
         if('serviceWorker' in navigator){
             
             try{
-                await navigator.serviceWorker.register('/src/core/PWA/src/sw.js');
+                await navigator.serviceWorker.register('APP/serviceWorker.js');
             }catch(e){
-                throw new Error("SW resgistration failed") ;
+                throw new Error("serviceWorker resgistration failed") ;
             }
         }
     }

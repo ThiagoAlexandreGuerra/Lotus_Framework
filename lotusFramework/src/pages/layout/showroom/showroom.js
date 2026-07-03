@@ -1,4 +1,4 @@
-import ContentAll           from "../../../core/systemComponents/components/boxes/ContentAll.js";
+import VirtualBody           from "../../../core/systemComponents/components/boxes/VirtualBody.js";
 import SideBar              from "../../../core/systemComponents/components/sideBar/SideBar.js";
 import BoxWithCilldBoxes    from "../../../core/systemComponents/components/boxes/BoxWithChildBoxes.js";
 import StandartBox          from "../../../core/systemComponents/components/boxes/StandardBox.js";
@@ -14,16 +14,19 @@ import { virtualDom }       from "../../../core/virtualDOM/main/virtualDom.js";
 import Paragraph            from "../../../core/systemComponents/components/paragraph/Paragraph.js";
 import Text                 from "../../../core/systemComponents/components/text/Text.js";
 import GetPath              from "../../devTools/services/GetPath.js";
+import { LAYOUTS_LIST } from "../../../core/navigation/domElementNavigator/Navigation.js";
 
 export default function showroom(navigation){
 
-    let contentMain = new ContentAll();
+    let contentMain = new VirtualBody();
     contentMain._addLayoutName("lshowroom");
-
+    
+    console.log(`LAYOUTS_LIST:  `)
+    console.log(LAYOUTS_LIST)
     let animation  = new Animations();
     let sideBar     = new SideBar();
     
-    let past        = new ClickEventButton(()=>{navigation._setNextLayoutClass("lab")})
+    let past        = new ClickEventButton(navigation.backToLastLayout())
             .setBackgroundImage(new GetPath().getchevronBackwar_24dp_b700ff());
                 
         
@@ -39,10 +42,10 @@ export default function showroom(navigation){
     let boxWithChildBoxVertical     = new BoxWithCilldBoxes(3);
     
     boxWithChildBoxHorizontal
-        .setHeight("500px")
-        .setWidth("400px")
-        .setBackgroundColor("black");
-    
+        .BWCSizeParentElementComparedToChildElement(0.7)
+        .setBackgroundColor("black")
+        .BWCResizeWidth("200px")
+        .BWCResizeHeight("200px")
     
     boxWithChildBoxHorizontal.getSon().setBackgroundColor("#ffae00");
     boxWithChildBoxHorizontal.getGrandson().setBackgroundColor("#0011ff");

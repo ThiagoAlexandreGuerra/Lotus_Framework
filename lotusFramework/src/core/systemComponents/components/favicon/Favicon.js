@@ -1,15 +1,18 @@
-import GetPath from "../../../utils/tools/GetPath.js";
+import GetPath from "../../../../pages/devTools/services/GetPath.js";
 export default class Favicon {
 
     constructor(
         title = "Lotus",
         caminhoFaviconImage = null
     ) {
-        this._paths = new GetPath();
+        this._paths = new GetPath().getLotusLogo();
 
         this._configurarGuia(
             title,
-            caminhoFaviconImage || this._paths.IntroLotusImagePng
+            caminhoFaviconImage || this._paths
+                                        .replace("url" , "" )
+                                        .replace(")" , "" )
+                                        .replace("(" , "" )
         );
     }
 
@@ -27,5 +30,7 @@ export default class Favicon {
         }
 
         favicon.href = caminhoFaviconImage;
+
+        
     }
 }

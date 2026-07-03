@@ -1,55 +1,40 @@
+const chevronBackwar_24dp_b700ff = "chevronBackwar_24dp_b700ff.svg";
+const chevronForward_24dp_b700ff = "chevronForward_24dp_b700ff.svg";
+const closeFullscreen_24dp       = "closeFullscreen_24dp.svg";
+const fullscreen_24dp            = "fullscreen_24dp.svg";
+const home_24dp                  = "home_24dp.svg";
+const person_24dp                = "person_24dp.svg";
+
+const lotusLogo                  = "lotusLogo.png";
 export default class GetPath {
 
     constructor() {
 
-        this._pathFolderIcons  = "../../../../assets/icons/";
-        this._pathFolderImages = "../../../../assets/images/";
-
-        this._closeFullscreenIcon =
-            this._pathFolderIcons +
-            "close_fullscreen_24dp_F3F3F3_FILL0_wght400_GRAD0_opsz24.svg";
-
-        this._openFullscreenIcon =
-            this._pathFolderIcons +
-            "fullscreen_24dp_F3F3F3_FILL0_wght400_GRAD0_opsz24.svg";
-
-        this._homeIcon =
-            this._pathFolderIcons +
-            "home_24dp_F3F3F3_FILL0_wght400_GRAD0_opsz24.svg";
-
-        this._perfilIcon =
-            this._pathFolderIcons +
-            "person_24dp_F3F3F3_FILL0_wght400_GRAD0_opsz24.svg";
-
-        this._introImageLotus =
-            this._pathFolderImages +
-            "lotusLogo.png";
+        this._pathFolderIcons  = "../../../../../APP/assets/icons/";
+        this._pathFolderImages = "../../../../../APP/assets/images/";
+        
     }
 
-    get closeFullscreenIcon()   { return this._closeFullscreenIcon;}
-    get openFullscreenIcon()    { return this._openFullscreenIcon;}
-    get homeIcon()              { return this._homeIcon;}
-    get perfilIcon()            { return this._perfilIcon;}
-    get IntroLotusImagePng()    { return this._introImageLotus;}
-    get pathFolderIcons()    { return this._pathFolderIcons;}
-    get pathFolderImages()   { return this._pathFolderImages;}
+   async _getPathAsset(nameImage) {
 
-    _serveUrlImage(path) { return `url(${path})`;}
+    const folders = [
+        this._pathFolderImages,
+        this._pathFolderIcons
+    ];
 
-    async _proucuraArquivoRetornandoCaminho(nameImage) {
+    const extensions = [
+        "png",
+        "jpg",
+        "jpeg",
+        "svg",
+        "webp"
+    ];
 
-        const extensions = [
-            "png",
-            "jpg",
-            "jpeg",
-            "svg",
-            "webp"
-        ];
+    for (const folder of folders) {
 
         for (const ext of extensions) {
 
-            const path =
-                `${this._pathFolderImages}${nameImage}.${ext}`;
+            const path = `${folder}${nameImage}.${ext}`;
 
             try {
 
@@ -60,10 +45,35 @@ export default class GetPath {
                 }
 
             } catch {}
+
         }
 
-        throw new Error(
-            `Folder "${nameImage}" is not found !!!`
-        );
+    }
+
+    throw new Error(
+        `Asset "${nameImage}" was not found.`
+    );
+    }
+
+    getchevronBackwar_24dp_b700ff(){
+        return `url(${this._pathFolderIcons + chevronBackwar_24dp_b700ff})`;
+    }
+    getchevronForward_24dp_b700ff(){
+        return `url(${this._pathFolderIcons + chevronForward_24dp_b700ff})`;
+    }
+    getcloseFullscreen_24dp(){
+        return `url(${this._pathFolderIcons + closeFullscreen_24dp})`;
+    }
+    getfullscreen_24dp(){
+        return `url(${this._pathFolderIcons + fullscreen_24dp})`;
+    }
+    gethome_24dp(){
+        return `url(${this._pathFolderIcons + home_24dp})`;
+    }
+    getperson_24dp(){
+        return `url(${this._pathFolderIcons + person_24dp})`;
+    }
+    getLotusLogo(){
+        return `url(${this._pathFolderImages + lotusLogo})`
     }
 }

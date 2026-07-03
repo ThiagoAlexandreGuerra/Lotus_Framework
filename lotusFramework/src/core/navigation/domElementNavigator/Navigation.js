@@ -1,8 +1,22 @@
 import instantRender from "../../render/renders/instantRenderer.js";
+import getCaller from "../../systemComponents/utils/getters/getCaller.js";
+import cleanDOMElementsById from "../../utils/tools/cleanDOMElementsById.js";
+import inspectFunction from "../../utils/inspect/inspectFunction.js";
+
+export const LAYOUTS_LIST = new Map();
 
 export default class Navigation {
 
     constructor() {
+
+        LAYOUTS_LIST.set("controller" , [
+            {
+                last:"",
+                current:"",
+                historic:[]
+            }
+        ])
+    
         this._currentLayoutClass = "start";
         this.renderNavigationContainer();
         this._startDOMProtection();
@@ -30,6 +44,10 @@ export default class Navigation {
         this._observer = observer;
     }
 
+    _setPreviousLayoutClass(value){
+        this._setNextLayoutClass(value);
+
+    }
     _setNextLayoutClass(value) {
 
         if (this._currentLayoutClass) {
@@ -38,6 +56,7 @@ export default class Navigation {
 
         this._currentLayoutClass = value;
         this.element.classList.add(value);
+
     }
 
     addClass(...classes) {
@@ -56,7 +75,6 @@ export default class Navigation {
         return this.element.classList.contains(className);
     }
 
-    
     checkClassesInDOM(...classes) {
         return classes
         .filter(className => document.querySelector(`.${className}`))
@@ -66,5 +84,55 @@ export default class Navigation {
     renderNavigationContainer() {
         this.element = instantRender("div",{},{}, true);
         this.element.className = this._currentLayoutClass;
+    }
+
+    backToLastLayout(){
+
+        return()=>{
+            console.log(`LAYOUTS_LIST:  `)
+            console.log(LAYOUTS_LIST)
+            LAYOUTS_LIST.get(LAYOUTS_LIST.get("controller")[0].current).suspend();
+            LAYOUTS_LIST.get(LAYOUTS_LIST.get("controller")[0].last).reactivate();
+
+            this.swapCurrentLastLayout(LAYOUTS_LIST.get("controller")[0].last , LAYOUTS_LIST.get("controller")[0].current);
+        }
+
+    }
+
+    goTo(nextLayout){
+      
+        let callerName = getCaller().name;
+        let nextLayoutName =  nextLayout.name || inspectFunction(nextLayout).name ;
+        
+        return  ()=>{
+          
+            if(LAYOUTS_LIST.has(nextLayoutName)){
+                
+                LAYOUTS_LIST.get(nextLayoutName).reactivate();
+
+            }else{
+
+                let currentLayoutName =  LAYOUTS_LIST.get("controller")[0].current;
+                let currentLayoutComponent = LAYOUTS_LIST.get(currentLayoutName);
+                currentLayoutComponent.suspend();
+                nextLayout(this)
+            }
+            this.swapCurrentLastLayout(nextLayoutName , callerName);
+        };
+    }
+
+    swapCurrentLastLayout(newLayout = "" , callerName){
+      
+        LAYOUTS_LIST.get("controller")[0].current = newLayout;
+        LAYOUTS_LIST.get("controller")[0].last = callerName;
+        
+    }
+
+    addNewLayout(vitualBody, callerLayoutName){
+         
+        let controllerLayout = LAYOUTS_LIST.get("controller");
+        controllerLayout[0].current =  callerLayoutName;
+        controllerLayout[0].historic.push(controllerLayout[0].current)
+        LAYOUTS_LIST.set(callerLayoutName, vitualBody);
     }
 }

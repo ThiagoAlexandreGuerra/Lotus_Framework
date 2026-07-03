@@ -1,5 +1,5 @@
 import getId from "../../componentIdentify/componentId/getId.js";
-import StandardComponent from "../../standardComponent/standardComponent.js";
+import StandardComponent from "../../standardComponent/main/StandardComponent.js";
 import Title from "../title/Title.js";
 import TextEditFunction from "../../utils/text/TextEditingFunction.js";
 import BoxWithChildBoxes from "../boxes/BoxWithChildBoxes.js";
@@ -15,7 +15,7 @@ export default class Paragraph extends BoxWithChildBoxes {
 
         super(3);
 
-        this._className.push("Paragraph");
+        this._classNName.push("Paragraph");
         this._classIdentify = "PGH";
         this._id = getId(this._classIdentify);
 
@@ -34,7 +34,8 @@ export default class Paragraph extends BoxWithChildBoxes {
             border:"",
             boxShadow:"",
             top:"0px",
-            position:"relative"
+            position:"relative",
+            alignItems:"flexStart"
         })
 
         if(title)    this._title = new Title( title );    
@@ -51,6 +52,7 @@ export default class Paragraph extends BoxWithChildBoxes {
     
         this._comment = comment.length?comment:undefined;
         this._isFunctionStyle=true;
+        this.BWCSizeParentElementComparedToChildElement(1)
         
         this.main();
     }
@@ -65,46 +67,51 @@ export default class Paragraph extends BoxWithChildBoxes {
 
         this._text?                         this.confgBoxes(this.getGrandson())         : this._removeGrandson();
         this.handleText();
-
+        
         (this._title || this._subtitle)?    this.confgBoxes(this.getSon())              : this._removeSon();
 
         !this._title    ||  this.getSon()._children.push(this._title);
         !this._subtitle ||  this.getSon()._children.push(this._subtitle);
 
-        
     };
 
     handleText(){
 
         this.formatText();
         !this._text     ||  this.getGrandson().setInnerHTML(this._text);
-        
+    
     }
+    
 
     confgTitleStyle(component , isTitles){
         component
             .setBackgroundColor(this._propertyConfig.backgroundColor)
             .setWidth(this._propertyConfig.width)
+            .setHeight("auto")
+            .setTop("0px")
             .setLeft(isTitles?"5px":"35px")
-            .setTop(isTitles?"5px":"65px")
+            .setMarginTop(isTitles?"5px":"55px")
             .setColor("#dfdfdf")
             .setFontSize(isTitles?"35px":"25px")
             .setPosition("relative")
-            .setDisplay("block")
+            .setDisplay("flex")
 
     }
 
     confgBoxes(component){
-    
-         component
-            .setBackgroundColor(this._propertyConfig.backgroundColor)
-            .setWidth(`${this.getWidth()*0.9}px`)
-            .setHeight("auto")
-            .setBorder("")
-            .setFontSize("15px")
-            .setBoxShadow("")
-            .setTextAlignmentLeft()
-            ._removeScrollbarConfig()
+        component
+        .setBackgroundColor(this._propertyConfig.backgroundColor)
+        .setWidth(`${this.getWidth()*0.9}px`)
+        .setHeight("auto")
+        .setBorder("")
+        .setFontSize("15px")
+        .setBoxShadow("")
+        .setTextAlignmentLeft()
+        ._removeScrollbarConfig()
+        .setBackgroundColor("transparent")
+        .setDisplay("block")
+        .setPadding("0px")
+        .setLeft("0px")
     }
 
     formatText(){

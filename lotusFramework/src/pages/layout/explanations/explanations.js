@@ -1,4 +1,4 @@
-import ContentAll from "../../../core/systemComponents/components/boxes/ContentAll.js";
+import VirtualBody from "../../../core/systemComponents/components/boxes/VirtualBody.js";
 import Title from "../../../core/systemComponents/components/title/Title.js";
 import { virtualDom } from "../../../core/virtualDOM/main/virtualDom.js";
 import SideBar from "../../../core/systemComponents/components/sideBar/SideBar.js";
@@ -9,18 +9,22 @@ import Paragraph from "../../../core/systemComponents/components/paragraph/Parag
 import AnchorButton from "../../../core/systemComponents/components/buttons/AnchorButton.js";
 import TextWithAnchors from "../../../core/systemComponents/components/text/TextWithAnchors.js";
 import GetPath from "../../devTools/services/GetPath.js";
+import ExternalFonts from "../../../core/systemComponents/utils/text/ExternalFonts.js";
 
-
+import lab from "../lab/lab.js";
 export default function explanations(navigation){
 
-    const contentMain = new ContentAll();
+    const contentMain = new VirtualBody();
     const installButton = new AppInstallButton();
     
         contentMain._addLayoutName("lexplanations");
 
         const navigationSideBar = new SideBar();
-        const buttonGo = new ClickEventButton(()=>{navigation._setNextLayoutClass("lab")})
+        const buttonGo = new ClickEventButton(navigation.goTo(lab))
         const pageTitle = new Title("Lotus Framework")
+        .setFontFamily(new ExternalFonts().BlackOpsOne())
+        .setTop("20px")
+       
 
         const explanationsText = new TextWithAnchors( "AnchorLinkHorizontal" ,
 new Paragraph({
@@ -93,7 +97,10 @@ text:  `  O objetivo do Lotus é evoluir gradualmente para uma plataforma madura
             
 )
         explanationsText
+            ._removeStandardPosition()
             .setTop("200px")
+            .setWidth("1100px")
+            .setLeft("150px")
     
         pageTitle.setLeft("120px")
 
@@ -112,6 +119,5 @@ text:  `  O objetivo do Lotus é evoluir gradualmente para uma plataforma madura
             ._addChild(explanationsText)
             ._addChild(navigationSideBar)
         
-
-        virtualDom(contentMain.release());
+        contentMain.release();
 }

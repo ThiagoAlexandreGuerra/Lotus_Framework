@@ -1,4 +1,4 @@
-import ContentAll from "../../../core/systemComponents/components/boxes/ContentAll.js";
+import VirtualBody from "../../../core/systemComponents/components/boxes/VirtualBody.js";
 import SideBar from "../../../core/systemComponents/components/sideBar/SideBar.js";
 import BoxWithCilldBoxes from "../../../core/systemComponents/components/boxes/BoxWithChildBoxes.js";
 import StandartBox from "../../../core/systemComponents/components/boxes/StandardBox.js";
@@ -10,16 +10,18 @@ import { virtualDom } from "../../../core/virtualDOM/main/virtualDom.js";
 import GridLayout from "../../../core/systemComponents/components/grid/GridLayout.js";
 import Animations from "../../devTools/animations/Animations.js";
 
+import showroom from "../showroom/showroom.js";
+import explanations from "../explanations/explanations.js";
 import GetPath from "../../devTools/services/GetPath.js";
 export default function lab(navigation){
 
-    let contentMain = new ContentAll();
+    let contentMain = new VirtualBody();
     let sideBar = new SideBar();
     
-    let next = new ClickEventButton(()=>{navigation._setNextLayoutClass("showroom")})
+    let next = new ClickEventButton(navigation.goTo(showroom))
         .setBackgroundImage(new GetPath().getchevronForward_24dp_b700ff());
         
-    let past = new ClickEventButton(()=>{navigation._setNextLayoutClass("explanations")})
+    let past = new ClickEventButton(navigation.goTo(explanations))
         .setBackgroundImage(new GetPath().getchevronBackwar_24dp_b700ff());
         
     let labTitle = new Title("LAB");
