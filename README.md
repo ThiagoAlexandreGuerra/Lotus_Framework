@@ -1,4 +1,5 @@
 # Lotus
+![Logo](assets/images/lotusLogo.png)
 
 A lightweight object-oriented JavaScript framework for building modular, declarative and highly extensible user interfaces.
 
